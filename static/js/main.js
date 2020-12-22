@@ -33,7 +33,7 @@ var heroes = {
   },
   paladin: {
     name: 'Паладин',
-    price: '20 000',
+    price: '20000',
     income: '1,15',
     background: 'linear-gradient(90deg, rgba(104,119,194,1) 0%, rgba(191,202,255,1) 100%)',
     cells: 6,
@@ -43,7 +43,7 @@ var heroes = {
   },
   archimag: {
     name: 'Архимаг',
-    price: '50 000',
+    price: '50000',
     income: '1,2',
     background: 'linear-gradient(90deg, rgba(245,183,111,1) 0%, rgba(255,225,190,1) 100%)',
     cells: 5,
@@ -53,7 +53,7 @@ var heroes = {
   },
   professor: {
     name: 'Профессор',
-    price: '75 000',
+    price: '75000',
     income: '1,25',
     background: 'linear-gradient(90deg, rgba(255,180,104,1) 0%, rgba(255,223,191,1) 100%)',
     cells: 5,
@@ -63,7 +63,7 @@ var heroes = {
   },
   mistic: {
     name: 'Мистик',
-    price: '100 0000',
+    price: '1000000',
     income: '1,3',
     background: 'linear-gradient(90deg, rgba(221,118,82,1) 0%, rgba(255,197,177,1) 100%)',
     cells: 5,
@@ -89,6 +89,7 @@ $('#cross').on('click', function (e) {
 
 function changeSlide(hero) {
   var currentSlide = hero;
+  $('#hero_image').css('opacity', 0);
   $('#hero_name').text(heroes[currentSlide].name);
   $('#price').text(heroes[currentSlide].price);
   $('#income').text(heroes[currentSlide].income);
@@ -96,6 +97,9 @@ function changeSlide(hero) {
   $('#price_per_cell').text(parseInt(heroes[currentSlide].price * 0.3));
   $('#potentialCell').text(heroes[currentSlide].cells);
   $('#hero_image').prop('src', 'static/img/' + heroes[currentSlide].img);
+  $('#hero_image').animate({
+    opacity: 1
+  }, 1000);
   checkButtons(hero);
   return;
 }
@@ -107,8 +111,8 @@ function checkButtons(hero) {
 
   if (heroes[newHero].prev && heroes[heroes[newHero].prev].disabled !== true) {
     $('#prev').show();
+    $('#hero_image').css('opacity', 0);
     $('#prev').on('click', function () {
-      alert(heroes[newHero].prev);
       changeSlide(heroes[newHero].prev);
     });
   } else {
@@ -118,7 +122,7 @@ function checkButtons(hero) {
   if (heroes[newHero].next && heroes[heroes[newHero].next].disabled !== true) {
     $('#next').show();
     $('#next').on('click', function () {
-      alert(heroes[newHero].next);
+      $('#hero_image').css('opacity', 0);
       changeSlide(heroes[newHero].next);
     });
   } else {
@@ -155,4 +159,48 @@ $('#referal_link').on('click', function (e) {
   }, function () {
     $(_this).find('span').text('Error, refresh page please');
   });
+});
+var heroes_avatars = [];
+
+for (var i = 1; i < 8; i++) {
+  heroes_avatars.push('static/img/hero' + i + '.png');
+}
+
+var heroAnimation = $('.heroes_animation img');
+var thisId = 0;
+var animationWidthHero = setInterval(function () {
+  heroAnimation.attr('src', heroes_avatars[thisId]);
+  thisId++;
+
+  if (thisId == 7) {
+    clearInterval(animationWidthHero);
+  }
+}, 500);
+var heroes_content = $('.ranks .ranks__content');
+heroes_content.children().each(function () {
+  $(this).css('opacity', 0);
+});
+$(window).scroll(function (event) {
+  var currentWidth = $(window).width();
+
+  if ($(window).scrollTop() > $('.ranks').offset().top - $(window).height() / 2 && currentWidth > 768) {
+    heroes_content.children().each(function () {
+      $(this).animate({
+        opacity: 1
+      }, 1000);
+    });
+  }
+
+  if ($(window).scrollTop() > $('.rules__content').offset().top - $(window).height() / 2 && currentWidth > 768) {
+    $('.rules__content').addClass('animate__fadeInUpBig');
+  }
+
+  if ($(window).scrollTop() > $('.domestication').offset().top - $(window).height() / 2 && currentWidth > 768) {
+    $('.domestication_info-text').addClass('animate__fadeInLeft');
+    $('.domestication_info img').addClass('animate__fadeInRight');
+  }
+
+  if ($(window).scrollTop() > $('.statistic').offset().top - $(window).height() / 2 && currentWidth > 768) {
+    $('.statistic__content').addClass('animate__fadeIn');
+  }
 });
