@@ -177,11 +177,16 @@ var animationWidthHero = setInterval(function () {
   }
 }, 500);
 var heroes_content = $('.ranks .ranks__content');
-heroes_content.children().each(function () {
-  $(this).css('opacity', 0);
-});
+
+if ($(window).width() > 768) {
+  heroes_content.children().each(function () {
+    $(this).css('opacity', 0);
+  });
+}
+
 $(window).scroll(function (event) {
   var currentWidth = $(window).width();
+  console.log(currentWidth);
 
   if ($(window).scrollTop() > $('.ranks').offset().top - $(window).height() / 2 && currentWidth > 768) {
     heroes_content.children().each(function () {
