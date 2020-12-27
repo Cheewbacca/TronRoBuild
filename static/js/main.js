@@ -46,7 +46,7 @@ var heroes = {
     price: '50000',
     income: '1,2',
     background: 'linear-gradient(90deg, rgba(245,183,111,1) 0%, rgba(255,225,190,1) 100%)',
-    cells: 5,
+    cells: 6,
     img: 'hero5.png',
     prev: 'paladin',
     next: 'professor'
@@ -86,6 +86,7 @@ $('#cross').on('click', function (e) {
   e.preventDefault();
   modal_ranks.fadeOut();
 });
+var lockSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"37.097\" height=\"48.265\" viewBox=\"0 0 37.097 48.265\">\n<g id=\"locked-padlock\" transform=\"translate(-56.313)\">\n  <path id=\"Path_44\" data-name=\"Path 44\" d=\"M90.778,19.491h-.94v-4.4A15.005,15.005,0,0,0,75.3,0c-.221,0-.662,0-.882,0A15.005,15.005,0,0,0,59.885,15.09v4.4h-.941c-1.449,0-2.632,1.5-2.632,3.343V44.91c0,1.845,1.182,3.355,2.632,3.355H90.778c1.449,0,2.632-1.51,2.632-3.355V22.834C93.41,20.987,92.227,19.491,90.778,19.491ZM77.844,33.85V40.52a1.424,1.424,0,0,1-1.4,1.41H73.283a1.424,1.424,0,0,1-1.4-1.41V33.85a4.039,4.039,0,0,1,2.541-6.873c.22-.009.662-.009.882,0a4.039,4.039,0,0,1,2.541,6.873Zm5.8-14.358H66.084v-4.4a8.778,8.778,0,1,1,17.555,0v4.4Z\" fill=\"var(--lock-color)\"/>\n</g>\n</svg>";
 
 function changeSlide(hero) {
   var currentSlide = hero;
@@ -96,6 +97,20 @@ function changeSlide(hero) {
   $('#modal_bg').css('background', heroes[currentSlide].background);
   $('#price_per_cell').text(parseInt(heroes[currentSlide].price * 0.3));
   $('#potentialCell').text(heroes[currentSlide].cells);
+  $('.table').children().remove();
+
+  for (var i = 0; i < heroes[currentSlide].cells; i++) {
+    $('.table').append('<div class="table_item active"></div>');
+  }
+
+  for (var _i = 0; _i < 10; _i++) {
+    if (!_i) {
+      $('.table').append('<div class="table_item opened">' + lockSvg + '</div>');
+    } else {
+      $('.table').append('<div class="table_item">' + lockSvg + '</div>');
+    }
+  }
+
   $('#hero_image').prop('src', 'static/img/' + heroes[currentSlide].img);
   $('#hero_image').animate({
     opacity: 1
